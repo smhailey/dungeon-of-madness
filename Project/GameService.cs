@@ -46,7 +46,12 @@ namespace Madness.Project
 
     public void Setup()
     {
+      Room room1 = new Room("Meadow", "A great place to start. Very soft floor. You see a castle to the East");
+      Room room2 = new Room("Castle", "This is a small castle with a door to the East and a locked door to the North.");
+      Room room3 = new Room("Closet", "A small closet.");
+      Room room4 = new Room("Courtyard", "A small courtyard with a catapult and an elevator.");
 
+      room1.Exits("east", room2);
     }
 
     public void StartGame()
