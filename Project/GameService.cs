@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using Madness.Project.Interfaces;
 using Madness.Project.Models;
 
@@ -9,6 +11,7 @@ namespace Madness.Project
     public IRoom CurrentRoom { get; set; }
     public Player CurrentPlayer { get; set; }
 
+    private bool Playing { get; set; } = true;
     public void GetUserInput()
     {
 
@@ -67,18 +70,57 @@ namespace Madness.Project
 
     public void StartGame()
     {
+      string greet = "Welcome to Bork";
+      foreach (char letter in greet)
+      {
+        Console.Write(letter);
+        Thread.Sleep(100);
+      }
+      Thread.Sleep(800);
+      Console.Clear();
+      Console.Write($"Here's the lowdown; you just fell from a great height and landed here with a thud. You only bounced once. Welcome to the {CurrentRoom.Name}");
+      while (Playing)
+      {
+        Console.WriteLine("");
+        System.Console.Write("What do you want to do: ");
+        string[] input = Console.ReadLine().ToLower().Split(' ');
+        Console.Clear();
+        string command = input[0];
+        string option = "";
+        if (input.Length > 1)
+        {
+          option = input[1];
+        }
+        switch (command)
+        {
+          case "go":
+            Go(option);
+            break;
+          case "quit":
+            Playing = false;
+            Console.WriteLine("Goodbye");
+            Thread.Sleep(800);
+            Console.Clear();
 
+            break;
+          case "take":
+            // TakeItem();
+            break;
+          default:
+            Console.WriteLine("Unknown Command");
+            break;
+        }
+      }
     }
 
     public void TakeItem(string itemName)
     {
-      if (CurrentRoom is Room.room3)
-      {
-        var CurrentRoom = (Room)CurrentRoom;
-        System.Console.Write("You take the key");
-        return;
-      }
-
+      //   if (CurrentRoom is Room.room3)
+      //   {
+      //     var CurrentRoom = (Room)CurrentRoom;
+      //     Console.Write("You take the key");
+      //     return;
+      //   }
     }
 
     public void UseItem(string itemName)

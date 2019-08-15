@@ -25,10 +25,10 @@ namespace Madness.Project.Models
       return this;
     }
 
-    public Room TakeItem(string itemName)
-    {
+    // public Room TakeItem(string itemName)
+    // {
 
-    }
+    // }
 
 
 
