@@ -16,7 +16,7 @@ namespace Madness.Project
 
     public void Go(string direction)
     {
-
+      CurrentRoom = CurrentRoom.Go(direction);
     }
 
     public void Help()
@@ -50,8 +50,19 @@ namespace Madness.Project
       Room room2 = new Room("Castle", "This is a small castle with a door to the East and a locked door to the North.");
       Room room3 = new Room("Closet", "A small closet.");
       Room room4 = new Room("Courtyard", "A small courtyard with a catapult and an elevator.");
-
-      room1.Exits("east", room2);
+      room1.Exits.Add("east", room2);
+      room2.Exits.Add("north", room4);
+      room2.Exits.Add("east", room3);
+      room2.Exits.Add("west", room1);
+      room3.Exits.Add("west", room2);
+      room4.Exits.Add("south", room2);
+      Item key = new Item("key", "Ooooo, shiny");
+      room3.Items.Add(key);
+      Item catapault = new Item("catapault", "Get ready to launch");
+      room4.Items.Add(catapault);
+      Item elevator = new Item("elevator", " Going up?");
+      room4.Items.Add(elevator);
+      CurrentRoom = room1;
     }
 
     public void StartGame()
@@ -61,6 +72,12 @@ namespace Madness.Project
 
     public void TakeItem(string itemName)
     {
+      if (CurrentRoom is Room.room3)
+      {
+        var CurrentRoom = (Room)CurrentRoom;
+        System.Console.Write("You take the key");
+        return;
+      }
 
     }
 
