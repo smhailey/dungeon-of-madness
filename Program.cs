@@ -1,13 +1,13 @@
 ﻿using System;
-using CastleGrimtol.Project;
+using Madness.Project;
 
-namespace CastleGrimtol
+namespace Madness
 {
-    public class Program
+  public class Program
+  {
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
 
-        }
     }
+  }
 }
