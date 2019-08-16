@@ -17,7 +17,7 @@ namespace Madness.Project.Models
       if (Exits.ContainsKey(direction))
       {
         Console.WriteLine("Traveling....");
-        Thread.Sleep(2000);
+        Thread.Sleep(1500);
         Console.Clear();
         return Exits[direction];
       }

@@ -20,6 +20,8 @@ namespace Madness.Project
     public void Go(string direction)
     {
       CurrentRoom = CurrentRoom.Go(direction);
+      Console.WriteLine($"You are now in the {CurrentRoom.Name}.");
+      Console.WriteLine($"{CurrentRoom.Description}");
     }
 
     public void Help()
@@ -50,7 +52,7 @@ namespace Madness.Project
     public void Setup()
     {
       Room room1 = new Room("Meadow", "A great place to start. Very soft floor. You see a castle to the East");
-      Room room2 = new Room("Castle", "This is a small castle with a door to the East and a locked door to the North.");
+      Room room2 = new Room("Castle", "This is a small castle with a door to the East and a door to the North.");
       Room room3 = new Room("Closet", "A small closet.");
       Room room4 = new Room("Courtyard", "A small courtyard with a catapult and an elevator.");
       room1.Exits.Add("east", room2);
@@ -76,9 +78,9 @@ namespace Madness.Project
         Console.Write(letter);
         Thread.Sleep(100);
       }
-      Thread.Sleep(800);
+      Thread.Sleep(700);
       Console.Clear();
-      Console.Write($"Here's the lowdown; you just fell from a great height and landed here with a thud. You only bounced once. Welcome to the {CurrentRoom.Name}");
+      Console.Write($"Here's the lowdown; you just fell out of the sky and landed here with a thud. You only bounced once. Welcome to the {CurrentRoom.Name}. {CurrentRoom.Description}.");
       while (Playing)
       {
         Console.WriteLine("");
