@@ -6,6 +6,7 @@ namespace Madness.Project.Interfaces
 
   public interface IRoom
   {
+    void ViewItems();
     string Name { get; set; }
     string Description { get; set; }
     List<Item> Items { get; set; }

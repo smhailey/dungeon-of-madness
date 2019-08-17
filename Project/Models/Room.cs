@@ -17,7 +17,7 @@ namespace Madness.Project.Models
       if (Exits.ContainsKey(direction))
       {
         Console.WriteLine("Traveling....");
-        Thread.Sleep(1500);
+        Thread.Sleep(1000);
         Console.Clear();
         return Exits[direction];
       }
@@ -25,13 +25,16 @@ namespace Madness.Project.Models
       return this;
     }
 
-    // public Room TakeItem(string itemName)
-    // {
+    public void UseItem(Item item)
+    { }
 
-    // }
-
-
-
+    public void ViewItems()
+    {
+      Items.ForEach(Item =>
+      {
+        Console.WriteLine(Item.Description);
+      });
+    }
 
     public Room(string name, string description)
     {
