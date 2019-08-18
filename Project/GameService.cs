@@ -56,8 +56,6 @@ namespace Madness.Project
 
     public void Setup()
     {
-      Console.WriteLine(CurrentPlayer);
-      Console.WriteLine(CurrentPlayer.Inventory);
       Room room1 = new Room("Meadow", "A great place to start. Very soft ground. You see a castle to the East.");
       Room room2 = new Room("Castle", "This is a small castle with a door to the East and a door to the North.");
       Room room3 = new Room("Closet", "A small closet.");
@@ -110,6 +108,9 @@ namespace Madness.Project
           case "go":
             Go(option);
             break;
+          case "look":
+            Look();
+            break;
           case "inv":
             CurrentPlayer.ViewInventory();
             break;
@@ -120,7 +121,7 @@ namespace Madness.Project
             // Console.Clear();
             break;
           case "take":
-            // TakeItem(itemName);
+            TakeItem(option);
             break;
           case "help":
             break;
@@ -138,7 +139,8 @@ namespace Madness.Project
       {
         CurrentRoom.Items.Remove(item);
         CurrentPlayer.Inventory.Add(item);
-        Console.WriteLine($"{CurrentPlayer.Inventory}");
+        CurrentPlayer.ViewInventory();
+        // Console.WriteLine($"Inventory: {CurrentPlayer.Inventory}");
       }
       else
       {

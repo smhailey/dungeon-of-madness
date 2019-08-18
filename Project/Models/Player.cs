@@ -11,6 +11,7 @@ namespace Madness.Project.Models
     {
       if (Inventory.Count != 0)
       {
+        Console.WriteLine("Inventory: ");
         Inventory.ForEach(Item =>
         {
           Console.WriteLine(Item.Name);
