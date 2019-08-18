@@ -94,8 +94,9 @@ namespace Madness.Project
       {
         Console.WriteLine("");
         Look();
-        Console.Write("What do you want to do? (Type \"help\" for help): ");
+        Console.Write("What do you want to do? (Enter \"help\" for help): ");
         string[] input = Console.ReadLine().ToLower().Split(' ');
+        //FIXME  un-comment the following line
         // Console.Clear();
         string command = input[0];
         string option = "";
@@ -118,12 +119,17 @@ namespace Madness.Project
             Playing = false;
             Console.WriteLine("Goodbye");
             Thread.Sleep(800);
-            // Console.Clear();
+            Console.Clear();
             break;
           case "take":
             TakeItem(option);
             break;
           case "help":
+            Console.WriteLine("Enter \"quit\" to quit the game.");
+            Console.WriteLine("Enter \"go\" followed by a direction (i.e. \"north\", \"east\", \"south\", or \"west\") to move around the map. ");
+            Console.WriteLine("Enter \"look\" to look at your surroundings.");
+            Console.WriteLine("Enter \"take\" followed by the name of an item to put it in your inventory.");
+            Console.WriteLine("Enter \"inv\" to check your inventory.");
             break;
           default:
             Console.WriteLine("Unknown Command");
@@ -140,7 +146,6 @@ namespace Madness.Project
         CurrentRoom.Items.Remove(item);
         CurrentPlayer.Inventory.Add(item);
         CurrentPlayer.ViewInventory();
-        // Console.WriteLine($"Inventory: {CurrentPlayer.Inventory}");
       }
       else
       {
