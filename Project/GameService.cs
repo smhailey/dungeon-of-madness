@@ -10,16 +10,55 @@ namespace Madness.Project
   {
     public IRoom CurrentRoom { get; set; }
     public Player CurrentPlayer { get; set; }
-
     private bool Playing { get; set; } = true;
-    // public void GetUserInput()
-    // {
-
-    // }
-
-    public void Go(string direction, bool Locked)
+    public void GetUserInput()
     {
-      CurrentRoom = CurrentRoom.Go(direction, Locked);
+      Console.Write("What do you want to do? (Enter \"help\" for help): ");
+      string[] input = Console.ReadLine().ToLower().Split(' ');
+      //FIXME  un-comment the following line
+      // Console.Clear();
+      string command = input[0];
+      string option = "";
+      if (input.Length > 1)
+      {
+        option = input[1];
+      }
+      switch (command)
+      {
+        case "go":
+          Go(option);
+          break;
+        case "look":
+          break;
+        case "inv":
+          CurrentPlayer.ViewInventory();
+          break;
+        case "quit":
+          Quit();
+          break;
+        case "take":
+          TakeItem(option);
+          break;
+        case "use":
+          UseItem(option);
+          break;
+        case "help":
+          Console.WriteLine("Enter \"quit\" to quit the game.");
+          Console.WriteLine("Enter \"go\" followed by a direction (i.e. \"north\", \"east\", \"south\", or \"west\") to move around the map. ");
+          Console.WriteLine("Enter \"look\" to look at your surroundings.");
+          Console.WriteLine("Enter \"take\" followed by the name of an item to put it in your inventory.");
+          Console.WriteLine("Enter \"inv\" to check your inventory.");
+          Console.WriteLine("Enter \"use\" followed by the name of an item to use the item.");
+          break;
+        default:
+          Console.WriteLine("Unknown Command");
+          break;
+      }
+    }
+
+    public void Go(string direction)
+    {
+      CurrentRoom = CurrentRoom.Go(direction);
     }
 
     public void Help()
@@ -47,8 +86,9 @@ namespace Madness.Project
     {
       Playing = false;
       Console.WriteLine("Goodbye");
-      Thread.Sleep(800);
-      Console.Clear();
+      // FIXME uncomment out lines below
+      // Thread.Sleep(800);
+      // Console.Clear();
     }
 
     public void Reset()
@@ -58,38 +98,37 @@ namespace Madness.Project
 
     public void Setup()
     {
-      Room room1 = new Room("Meadow", "A great place to start. Very soft ground. You see a castle to the East.", false);
-      Room room2 = new Room("Castle", "This is a small castle with a door to the East, a door to the West, and a door to the North.", false);
-      Room room3 = new Room("Closet", "A small closet.", false);
-      Room room4 = new Room("Courtyard", "A small courtyard containing a catapult and an elevator.", true);
+      Room room1 = new Room("Meadow", "A great place to start. Very soft ground. You see a castle to the East.");
+      Room room2 = new Room("Castle", "This is a small castle with a door to the East, a door to the West, and a locked door to the North.");
+      Room room3 = new Room("Closet", "A small closet with only 1 door; the one you just entered from.");
+      // room4 is added in the AddCoutyard() method in the UseItem() method.
       room1.Exits.Add("east", room2);
-      room2.Exits.Add("north", room4);
+      //room2.Exits.Add("north", room4);
       room2.Exits.Add("east", room3);
       room2.Exits.Add("west", room1);
       room3.Exits.Add("west", room2);
-      room4.Exits.Add("south", room2);
+      //room4.Exits.Add("south", room2);
       Item key = new Item("key", "You see a key carelessly laying on the floor.");
       room3.Items.Add(key);
-      Item catapault = new Item("catapault", "You see a catapult sitting in the corner.");
-      room4.Items.Add(catapault);
-      Item elevator = new Item("elevator", "You see an elevator built into the rear wall.");
-      room4.Items.Add(elevator);
+      // Item catapault = new Item("catapault", "You see a catapult sitting in the corner.");
+      // room4.Items.Add(catapault);
+      // Item elevator = new Item("elevator", "You see an elevator built into the rear wall.");
+      // room4.Items.Add(elevator);
       CurrentRoom = room1;
-      CurrentPlayer = new Player("Bob", false);
+      CurrentPlayer = new Player("Bob");
     }
 
     public void StartGame()
     {
       //FIXME  un-comment the following lines
-      string greet = "Welcome to Bork";
-      foreach (char letter in greet)
-      {
-        Console.Write(letter);
-        Thread.Sleep(100);
-      }
-      Thread.Sleep(700);
-      //FIXME  un-comment the following line
-      Console.Clear();
+      // string greet = "Welcome to Bork";
+      // foreach (char letter in greet)
+      // {
+      //   Console.Write(letter);
+      //   Thread.Sleep(100);
+      // }
+      // Thread.Sleep(700);
+      // Console.Clear();
       Console.WriteLine("");
       Console.WriteLine("You are falling.");
       Console.WriteLine("You've been falling for a while.");
@@ -99,57 +138,7 @@ namespace Madness.Project
       {
         Console.WriteLine("");
         Look();
-        Console.Write("What do you want to do? (Enter \"help\" for help): ");
-        string[] input = Console.ReadLine().ToLower().Split(' ');
-        //FIXME  un-comment the following line
-        Console.Clear();
-        string command = input[0];
-        string option = "";
-        if (input.Length > 1)
-        {
-          option = input[1];
-        }
-        switch (command)
-        {
-          case "go":
-            Go(option, CurrentRoom.Locked);
-            break;
-          case "look":
-            // FIXME code below commented out to avoid duplicate looking
-            // Look();
-            break;
-          case "inv":
-            CurrentPlayer.ViewInventory();
-            break;
-          case "quit":
-            Quit();
-            // Playing = false;
-            // Console.WriteLine("Goodbye");
-            // Thread.Sleep(800);
-            break;
-          case "take":
-            TakeItem(option);
-            break;
-          case "use":
-            UseItem(option);
-            // if (room4Unlocked == true)
-            // {
-            //   room2.Exits.Name = "north";
-
-            // }
-            break;
-          case "help":
-            Console.WriteLine("Enter \"quit\" to quit the game.");
-            Console.WriteLine("Enter \"go\" followed by a direction (i.e. \"north\", \"east\", \"south\", or \"west\") to move around the map. ");
-            Console.WriteLine("Enter \"look\" to look at your surroundings.");
-            Console.WriteLine("Enter \"take\" followed by the name of an item to put it in your inventory.");
-            Console.WriteLine("Enter \"inv\" to check your inventory.");
-            Console.WriteLine("Enter \"use\" followed by the name of an item to use the item.");
-            break;
-          default:
-            Console.WriteLine("Unknown Command");
-            break;
-        }
+        GetUserInput();
       }
     }
 
@@ -172,7 +161,6 @@ namespace Madness.Project
       {
         CurrentRoom.Items.Remove(item);
         CurrentPlayer.Inventory.Add(item);
-        CurrentPlayer.HaveKey = true;
         CurrentPlayer.ViewInventory();
       }
     }
@@ -184,8 +172,8 @@ namespace Madness.Project
         if (itemName == "catapult")
         {
           Console.Clear();
-          Console.WriteLine("You climb into the catapult and cut the restraining rope. You slam into the wall.  You are now a meat pancake.  You lose.");
-          Thread.Sleep(5000);
+          Console.WriteLine("You climb into the catapult and cut the restraining rope. You slam into the wall. You are now a meat pancake. You lose.");
+          Thread.Sleep(6000);
           // FIXME fix reset method in code below
           // Console.WriteLine("Do you want to play again? (y/n)");
           // string input = Console.ReadLine().ToLower();
@@ -202,8 +190,8 @@ namespace Madness.Project
         else if (itemName == "elevator")
         {
           Console.Clear();
-          Console.WriteLine("You step into the elevator and press the only button. The doors close and you listen to \"The Girl from Ipanema\" playing softly as the elevator takes to back to your home. Congratulations. You win. Try to pay attention to where you are walking next time.");
-          Thread.Sleep(6000);
+          Console.WriteLine("You step into the elevator and press the only button. The doors close and you listen to \"The Girl from Ipanema\" playing softly as the elevator takes you back to your home. Congratulations. You win. Try to pay attention to where you are walking next time.");
+          Thread.Sleep(7000);
           // FIXME fix reset method in code below
           //   Console.WriteLine("Do you want to play again? (y/n)");
           //   string input = Console.ReadLine().ToLower();
@@ -217,30 +205,42 @@ namespace Madness.Project
           // Playing = false;
           //   }
         }
+        else if (itemName == "key")
+        {
+          Console.WriteLine($"You do not have a {itemName}.");
+        }
         else
         {
           Console.WriteLine($"No {itemName} here to use.");
         }
       }
-      else if (CurrentPlayer.HaveKey == true)
+      else if (CurrentRoom.Name == "Castle" && item != null && item.Name == "key")
       {
-        if (CurrentRoom.Name == "Castle")
-        {
-          Console.WriteLine("The door is now unlocked.");
-          CurrentRoom.Locked = false;
-          CurrentPlayer.Inventory.Remove(item);
-          CurrentPlayer.HaveKey = false;
-          CurrentPlayer.ViewInventory();
-        }
-        else if (CurrentRoom.Name != "Castle")
-        {
-          Console.WriteLine("The key does not fit any door here.");
-        }
+        AddCoutyard();
+        Console.WriteLine("The door is now unlocked.");
+        CurrentPlayer.Inventory.Remove(item);
+        CurrentPlayer.ViewInventory();
       }
-      else if (CurrentPlayer.HaveKey == false)
+      else if (CurrentRoom.Name != "Castle" && item != null && item.Name == "key")
+      {
+        Console.WriteLine("The key does not fit any door here.");
+      }
+      else if (item == null)
       {
         Console.WriteLine($"You do not have a {itemName}.");
       }
+    }
+
+    private void AddCoutyard()
+    {
+      CurrentRoom.Description = "This is a small castle with a door to the East, a door to the West, and a door to the North.";
+      Room room4 = new Room("Courtyard", "A small courtyard containing a catapult, an elevator, and a single door to the South from which you just entered.");
+      Item catapault = new Item("catapault", "You see a catapult sitting in the corner.");
+      room4.Items.Add(catapault);
+      Item elevator = new Item("elevator", "You see an elevator built into the rear wall.");
+      room4.Items.Add(elevator);
+      CurrentRoom.Exits.Add("north", room4);
+      room4.Exits.Add("south", CurrentRoom);
     }
   }
 }

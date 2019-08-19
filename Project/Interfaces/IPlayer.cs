@@ -5,9 +5,7 @@ namespace Madness.Project.Interfaces
 {
   public interface IPlayer
   {
-    // IPlayer ViewInventory();
     string PlayerName { get; set; }
-    bool HaveKey { get; set; }
     List<Item> Inventory { get; set; }
   }
 }
