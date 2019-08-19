@@ -45,7 +45,10 @@ namespace Madness.Project
 
     public void Quit()
     {
-
+      Playing = false;
+      Console.WriteLine("Goodbye");
+      Thread.Sleep(800);
+      Console.Clear();
     }
 
     public void Reset()
@@ -118,11 +121,10 @@ namespace Madness.Project
             CurrentPlayer.ViewInventory();
             break;
           case "quit":
-            Playing = false;
-            Console.WriteLine("Goodbye");
-            Thread.Sleep(800);
-            //FIXME  un-comment the following line
-            Console.Clear();
+            Quit();
+            // Playing = false;
+            // Console.WriteLine("Goodbye");
+            // Thread.Sleep(800);
             break;
           case "take":
             TakeItem(option);
@@ -182,6 +184,7 @@ namespace Madness.Project
         {
           Console.Clear();
           Console.WriteLine("You climb into the catapult and cut the restraining rope. You slam into the wall.  You are now a meat pancake.  You lose.");
+          Thread.Sleep(4000);
           // FIXME fix reset method in code below
           // Console.WriteLine("Do you want to play again? (y/n)");
           // string input = Console.ReadLine().ToLower();
@@ -191,13 +194,15 @@ namespace Madness.Project
           // }
           // if (input == "n")
           // {
-          Playing = false;
+          Quit();
+          // Playing = false;
           //   }
         }
         else if (itemName == "elevator")
         {
           Console.Clear();
           Console.WriteLine("You step into the elevator and press the only button. The doors close and you listen to \"The Girl from Ipanema\" playing softly as the elevator takes to back to your home. Congratulations. You win. Try to pay attention to where you are walking next time.");
+          Thread.Sleep(5000);
           // FIXME fix reset method in code below
           //   Console.WriteLine("Do you want to play again? (y/n)");
           //   string input = Console.ReadLine().ToLower();
@@ -207,7 +212,8 @@ namespace Madness.Project
           //   }
           //   if (input == "n")
           //   {
-          Playing = false;
+          Quit();
+          // Playing = false;
           //   }
         }
         else
