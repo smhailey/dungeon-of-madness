@@ -18,7 +18,7 @@ namespace Madness.Project.Interfaces
     void StartGame();
 
     //Gets the user input and calls the appropriate command
-    void GetUserInput();
+    // void GetUserInput();
 
     #region Console Commands
 
@@ -30,7 +30,7 @@ namespace Madness.Project.Interfaces
 
     //Validate CurrentRoom.Exits contains the desired direction
     //if it does change the CurrentRoom
-    void Go(string direction);
+    void Go(string direction, bool locked);
 
     //When taking an item be sure the item is in the current room 
     //before adding it to the player inventory, Also don't forget to 

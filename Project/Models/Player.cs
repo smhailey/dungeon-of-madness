@@ -22,11 +22,13 @@ namespace Madness.Project.Models
     }
 
     public string PlayerName { get; set; }
+    public bool HaveKey { get; set; }
     public List<Item> Inventory { get; set; }
 
-    public Player(string playerName)
+    public Player(string playerName, bool haveKey)
     {
       PlayerName = playerName;
+      HaveKey = haveKey;
       Inventory = new List<Item>();
     }
   }

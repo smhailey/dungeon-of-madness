@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+// using System.Collections.Generic;
 using System.Threading;
 using Madness.Project.Interfaces;
 using Madness.Project.Models;
@@ -12,14 +12,14 @@ namespace Madness.Project
     public Player CurrentPlayer { get; set; }
 
     private bool Playing { get; set; } = true;
-    public void GetUserInput()
-    {
+    // public void GetUserInput()
+    // {
 
-    }
+    // }
 
-    public void Go(string direction)
+    public void Go(string direction, bool Locked)
     {
-      CurrentRoom = CurrentRoom.Go(direction);
+      CurrentRoom = CurrentRoom.Go(direction, Locked);
     }
 
     public void Help()
@@ -32,7 +32,6 @@ namespace Madness.Project
 
     public void Inventory()
     {
-
       Console.WriteLine($"{CurrentPlayer.Inventory}");
     }
 
@@ -56,11 +55,12 @@ namespace Madness.Project
 
     public void Setup()
     {
-      Room room1 = new Room("Meadow", "A great place to start. Very soft ground. You see a castle to the East.");
-      Room room2 = new Room("Castle", "This is a small castle with a door to the East and a door to the North.");
-      Room room3 = new Room("Closet", "A small closet.");
-      Room room4 = new Room("Courtyard", "A small courtyard with a catapult and an elevator.");
+      Room room1 = new Room("Meadow", "A great place to start. Very soft ground. You see a castle to the East.", false);
+      Room room2 = new Room("Castle", "This is a small castle with a door to the East, a door to the West, and a door to the North.", false);
+      Room room3 = new Room("Closet", "A small closet.", false);
+      Room room4 = new Room("Courtyard", "A small courtyard containing a catapult and an elevator.", true);
       room1.Exits.Add("east", room2);
+      room2.Exits.Add("north", room4);
       room2.Exits.Add("east", room3);
       room2.Exits.Add("west", room1);
       room3.Exits.Add("west", room2);
@@ -72,11 +72,12 @@ namespace Madness.Project
       Item elevator = new Item("elevator", "You see an elevator built into the rear wall.");
       room4.Items.Add(elevator);
       CurrentRoom = room1;
-      CurrentPlayer = new Player("Bob");
+      CurrentPlayer = new Player("Bob", false);
     }
 
     public void StartGame()
     {
+      //FIXME  un-comment the following lines
       string greet = "Welcome to Bork";
       foreach (char letter in greet)
       {
@@ -84,7 +85,8 @@ namespace Madness.Project
         Thread.Sleep(100);
       }
       Thread.Sleep(700);
-      // Console.Clear();
+      //FIXME  un-comment the following line
+      Console.Clear();
       Console.WriteLine("");
       Console.WriteLine("You are falling.");
       Console.WriteLine("You've been falling for a while.");
@@ -97,7 +99,7 @@ namespace Madness.Project
         Console.Write("What do you want to do? (Enter \"help\" for help): ");
         string[] input = Console.ReadLine().ToLower().Split(' ');
         //FIXME  un-comment the following line
-        // Console.Clear();
+        Console.Clear();
         string command = input[0];
         string option = "";
         if (input.Length > 1)
@@ -107,7 +109,7 @@ namespace Madness.Project
         switch (command)
         {
           case "go":
-            Go(option);
+            Go(option, CurrentRoom.Locked);
             break;
           case "look":
             Look();
@@ -119,10 +121,19 @@ namespace Madness.Project
             Playing = false;
             Console.WriteLine("Goodbye");
             Thread.Sleep(800);
+            //FIXME  un-comment the following line
             Console.Clear();
             break;
           case "take":
             TakeItem(option);
+            break;
+          case "use":
+            UseItem(option);
+            // if (room4Unlocked == true)
+            // {
+            //   room2.Exits.Name = "north";
+
+            // }
             break;
           case "help":
             Console.WriteLine("Enter \"quit\" to quit the game.");
@@ -130,6 +141,7 @@ namespace Madness.Project
             Console.WriteLine("Enter \"look\" to look at your surroundings.");
             Console.WriteLine("Enter \"take\" followed by the name of an item to put it in your inventory.");
             Console.WriteLine("Enter \"inv\" to check your inventory.");
+            Console.WriteLine("Enter \"use\" followed by the name of an item to use the item.");
             break;
           default:
             Console.WriteLine("Unknown Command");
@@ -141,33 +153,95 @@ namespace Madness.Project
     public void TakeItem(string itemName)
     {
       Item item = CurrentRoom.Items.Find(Item => Item.Name.ToLower() == itemName);
-      if (item != null)
-      {
-        CurrentRoom.Items.Remove(item);
-        CurrentPlayer.Inventory.Add(item);
-        CurrentPlayer.ViewInventory();
-      }
-      else
+      if (item == null)
       {
         Console.WriteLine("Nothing to take.");
       }
+      else if (item.Name == "catapult")
+      {
+        Console.WriteLine("Cannot take the catapult. Try using it instead.");
+      }
+      else if (item.Name == "elevator")
+      {
+        Console.WriteLine("Cannot take the elevator. Try using it instead.");
+      }
+      else
+      {
+        CurrentRoom.Items.Remove(item);
+        CurrentPlayer.Inventory.Add(item);
+        CurrentPlayer.HaveKey = true;
+        CurrentPlayer.ViewInventory();
+      }
     }
+
+
 
     public void UseItem(string itemName)
     {
       Item item = CurrentPlayer.Inventory.Find(Item => Item.Name.ToLower() == itemName);
-      // if (item != null && item.Name.ToLower() == Item.key)
-      // {
-      //   if (CurrentRoom == Room.room2)
-      //   {
-      //     Console.WriteLine("Door is unlocked.");
-      //     room2.Exits.Add("north", room4);
-      //   }
-      //   else
-      //   {
-      //     Console.WriteLine("The key does not fit any door here.");
-      //   }
-      // }
+      if (CurrentRoom.Name == "Courtyard")
+      {
+        if (itemName == "catapult")
+        {
+          Console.Clear();
+          Console.WriteLine("You climb into the catapult and cut the restraining rope. You slam into the wall.  You are now a meat pancake.  You lose.");
+          // FIXME fix reset method in code below
+          // Console.WriteLine("Do you want to play again? (y/n)");
+          // string input = Console.ReadLine().ToLower();
+          // if (input == "y")
+          // {
+          //   Reset();
+          // }
+          // if (input == "n")
+          // {
+          Playing = false;
+          //   }
+        }
+        else if (itemName == "elevator")
+        {
+          Console.Clear();
+          Console.WriteLine("You step into the elevator and press the only button. The doors close and you listen to \"The Girl from Ipanema\" playing softly as the elevator takes to back to your home. Congratulations. You win. Try to pay attention to where you are walking next time.");
+          // FIXME fix reset method in code below
+          //   Console.WriteLine("Do you want to play again? (y/n)");
+          //   string input = Console.ReadLine().ToLower();
+          //   if (input == "y")
+          //   {
+          //     Reset();
+          //   }
+          //   if (input == "n")
+          //   {
+          Playing = false;
+          //   }
+        }
+        else
+        {
+          Console.WriteLine($"No {itemName} here to use.");
+        }
+      }
+      else if (CurrentPlayer.HaveKey == true)
+      {
+        if (CurrentRoom.Name == "Castle")
+        {
+          Console.WriteLine("The door is now unlocked.");
+          CurrentRoom.Locked = false;
+          CurrentPlayer.Inventory.Remove(item);
+          CurrentPlayer.HaveKey = false;
+          CurrentPlayer.ViewInventory();
+        }
+        else if (CurrentRoom.Name != "Castle")
+        {
+          Console.WriteLine("The key does not fit any door here.");
+        }
+      }
+      else if (CurrentPlayer.HaveKey == false)
+      {
+        Console.WriteLine($"You do not have a {itemName}.");
+      }
+
+
+
+
+
       // if (item != null && item.Name.ToLower() == room4.Item.catapault)
       // {
       //   Console.WriteLine("You climb into the catapult and cut the restraining rope. You slam into the wall.  You are now a meat pancake.  You lose.");
@@ -184,17 +258,7 @@ namespace Madness.Project
       // }
       // if (item != null && item.Name.ToLower() == room4.Item.elevator)
       // {
-      //   Console.WriteLine("You step into the elevator and press the only button. The doors close and you listen to \"The Girl from Ipanema\" playing softly as the elevator takes to back to your home. Congratulations. You win. Try to pay attention to where you are walking next time.");
-      //   Console.WriteLine("Do you want to play again? (y/n)");
-      //   string input = Console.ReadLine().ToLower();
-      //   if (input == "y")
-      //   {
-      //     Reset();
-      //   }
-      //   if (input == "n")
-      //   {
-      //     Playing = false;
-      //   }
+      //   
       // }
     }
   }
