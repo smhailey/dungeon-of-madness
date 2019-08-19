@@ -173,9 +173,6 @@ namespace Madness.Project
         CurrentPlayer.ViewInventory();
       }
     }
-
-
-
     public void UseItem(string itemName)
     {
       Item item = CurrentPlayer.Inventory.Find(Item => Item.Name.ToLower() == itemName);
@@ -237,29 +234,6 @@ namespace Madness.Project
       {
         Console.WriteLine($"You do not have a {itemName}.");
       }
-
-
-
-
-
-      // if (item != null && item.Name.ToLower() == room4.Item.catapault)
-      // {
-      //   Console.WriteLine("You climb into the catapult and cut the restraining rope. You slam into the wall.  You are now a meat pancake.  You lose.");
-      //   Console.WriteLine("Do you want to play again? (y/n)");
-      //   string input = Console.ReadLine().ToLower();
-      //   if (input == "y")
-      //   {
-      //     Reset();
-      //   }
-      //   if (input == "n")
-      //   {
-      //     Playing = false;
-      //   }
-      // }
-      // if (item != null && item.Name.ToLower() == room4.Item.elevator)
-      // {
-      //   
-      // }
     }
   }
 }
