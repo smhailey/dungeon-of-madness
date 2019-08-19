@@ -1,5 +1,4 @@
 using System;
-// using System.Collections.Generic;
 using System.Threading;
 using Madness.Project.Interfaces;
 using Madness.Project.Models;
@@ -15,8 +14,7 @@ namespace Madness.Project
     {
       Console.Write("What do you want to do? (Enter \"help\" for help): ");
       string[] input = Console.ReadLine().ToLower().Split(' ');
-      //FIXME  un-comment the following line
-      // Console.Clear();
+      Console.Clear();
       string command = input[0];
       string option = "";
       if (input.Length > 1)
@@ -74,21 +72,18 @@ namespace Madness.Project
       Console.WriteLine($"{CurrentPlayer.Inventory}");
     }
 
-
     public void Look()
     {
       Console.WriteLine($"You are in the {CurrentRoom.Name}. {CurrentRoom.Description}");
       CurrentRoom.ViewItems();
     }
 
-
     public void Quit()
     {
       Playing = false;
       Console.WriteLine("Goodbye");
-      // FIXME uncomment out lines below
-      // Thread.Sleep(800);
-      // Console.Clear();
+      Thread.Sleep(800);
+      Console.Clear();
     }
 
     public void Reset()
@@ -101,34 +96,27 @@ namespace Madness.Project
       Room room1 = new Room("Meadow", "A great place to start. Very soft ground. You see a castle to the East.");
       Room room2 = new Room("Castle", "This is a small castle with a door to the East, a door to the West, and a locked door to the North.");
       Room room3 = new Room("Closet", "A small closet with only 1 door; the one you just entered from.");
-      // room4 is added in the AddCoutyard() method in the UseItem() method.
+      // room4 & entrance to room4 are added in the AddCoutyard() method in the UseItem() method.
       room1.Exits.Add("east", room2);
-      //room2.Exits.Add("north", room4);
       room2.Exits.Add("east", room3);
       room2.Exits.Add("west", room1);
       room3.Exits.Add("west", room2);
-      //room4.Exits.Add("south", room2);
       Item key = new Item("key", "You see a key carelessly laying on the floor.");
       room3.Items.Add(key);
-      // Item catapault = new Item("catapault", "You see a catapult sitting in the corner.");
-      // room4.Items.Add(catapault);
-      // Item elevator = new Item("elevator", "You see an elevator built into the rear wall.");
-      // room4.Items.Add(elevator);
       CurrentRoom = room1;
       CurrentPlayer = new Player("Bob");
     }
 
     public void StartGame()
     {
-      //FIXME  un-comment the following lines
-      // string greet = "Welcome to Bork";
-      // foreach (char letter in greet)
-      // {
-      //   Console.Write(letter);
-      //   Thread.Sleep(100);
-      // }
-      // Thread.Sleep(700);
-      // Console.Clear();
+      string greet = "Welcome to Bork";
+      foreach (char letter in greet)
+      {
+        Console.Write(letter);
+        Thread.Sleep(100);
+      }
+      Thread.Sleep(700);
+      Console.Clear();
       Console.WriteLine("");
       Console.WriteLine("You are falling.");
       Console.WriteLine("You've been falling for a while.");

@@ -20,7 +20,6 @@ namespace Madness.Project.Models
         Thread.Sleep(1000);
         Console.Clear();
         return Exits[direction];
-
       }
       else
       {
